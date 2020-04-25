@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <title>Document</title>
+</head>
+<body>
+  <div class="root">
+    <table class="table table-bordered container" id="myTable">
+        <thead>
+          <tr class="table-filters">
+            <td class="table-filters-search input-group mb-3">
+            <input type="text" class="form-control search-input" placeholder="Enter priduct name" aria-label="Enter priduct name" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary btn-search"  id="button-addon2">Search</button>
+            </td>
+            <td>
+            </td>
+            <td class="add-btn-cell">
+                  <a class="btn btn-outline-secondary btn-add" href="#" id="button-addon2">Add new</a>
+            </td>
+          </tr>
+          <tr>
+            <th scope="col" class="cell-title" data-column-name="name">Name</th>
+            <th scope="col" data-column-name="price" class="cell-title" >Price</th>
+            <th scope="col" class="cell-title" >Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+
+          <!-- product list -->
+          
+        </tbody>
+      </table>
+      <section class="modal modal-overlay hidden">
+        <div class="modal__container hidden">
+          <h2 class="modal__title">Are you shure?</h2>
+          <p class="modal__title-description">Are you shure you want to delete <span class="modal__title-name"></span>?</p>
+          <div class="modal__button-container">
+            <button class="btn btn-outline-secondary btn-sm btn-agree">YES</button>
+            <button class="btn btn-outline-secondary btn-sm btn-cancel">NO</button>
+          </div>
+        </div>
+        <div class="modal__container-form hidden" id="modalContainer">
+            <h2 class="form__title"></h2>
+            <form class="modal-product" id="formElem">
+            <div class="form-group">
+              <label for="formGroupExampleInput">Name</label>
+              <input type="text" class="form-control form-input input-name"  name="name" id="formGroupExampleInput1" placeholder="Example input placeholder" >
+              <div class="invalid-feedback">
+               
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Supplier email</label>
+              <input type="text" class="form-control form-input input-email" name="email" id="formGroupExampleInput2" placeholder="Another input placeholder">
+              <div class="invalid-feedback">
+                
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="formGroupExampleInput">Count</label>
+              <input type="text" class="form-control form-input input-count" name="count" id="formGroupExampleInput3" placeholder="Example input placeholder">
+              <div class="invalid-feedback">
+               
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="formGroupExampleInput">Price</label>
+              <input type="text" class="form-control form-input input-price" name="price" id="formGroupExampleInput4" placeholder="Example input placeholder">
+              <div class="invalid-feedback">
+               
+              </div>
+            </div>
+            <div class="select-container">
+              <select class="custom-select custom-select-sm select-delivery" name="delivery">
+                <!-- <option class="select__option" selected></option> -->
+                <option class="select__option" value="Russia">Russia</option>
+                <option class="select__option" value="Belarus">Belarus</option>
+                <option class="select__option" value="USA">USA</option>
+              </select>
+              <div class="select-container__modal">
+                <div class="checkbox select-all">
+                  <input id="all" type="checkbox" />
+                  <label class="checkbox__label" for="all">Select all</label>
+                </div>
+                <div class="checkbox rows">
+                  <input class="checkbox"  id="box1" type="checkbox" />
+                  <label class="checkbox__label" for="box1">city</label>
+                </div>
+                <div class="checkbox rows">
+                  <input class="checkbox"  id="box2" type="checkbox" />
+                  <label class="checkbox__label" for="box2">city</label>
+                </div>
+                <div class="checkbox rows">
+                  <input class="checkbox"  id="box3" type="checkbox" />
+                  <label class="checkbox__label" for="box3">city</label>
+                </div>
+              </div>
+            </div>
+            <div class="btn-container">
+              <button class="btn btn-outline-secondary btn-sm btn-save" data-save="save">Save changes</button>
+              <a href="#" class="btn btn-outline-secondary btn-sm btn-cancel-popup">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </section>
+      <button class="btn btn-outline-secondary btn-sm btn-clear">Clear All</button>
+    </div>
+    <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+     
+</body>
+</html>

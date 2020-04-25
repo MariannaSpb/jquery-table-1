@@ -1,0 +1,144 @@
+.root {
+  padding: 40px;
+  font-family: 'Comic Neue', cursive;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(147, 151, 203, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* display: none; */
+  z-index: 3;
+}
+
+.modal__container {
+  position: relative;
+  top: 10%;
+  left: 25%;
+  width: 440px;
+  min-height: 230px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 40px 40px;
+  /* display: none; */
+}
+
+.modal__container-form {
+  width: 440px;
+  min-height: 230px;
+  background-color: #fff;
+  border-radius: 12px;
+  position: relative;
+  box-sizing: border-box;
+  padding: 40px 40px;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.btn-sm {
+  min-width: 100px;
+}
+
+/* .modal-product {
+  display: none;
+} */
+
+
+
+.product-email {
+  display: none;
+}
+
+.error {
+  border-color: #dc3545;
+}
+
+.product-delivery {
+  display: none;
+}
+
+.table-filters, .input-group {
+  border: 1px solid white;
+}
+
+.table-filters .input-group {
+  border: 1px solid white;
+}
+
+.input-group > .form-control:not(:last-child), .input-group > .custom-select:not(:last-child) {
+  border-color: #6c757d;
+  border-radius: 8px;
+}
+
+.btn  {
+  border-radius: 8px;
+  min-width: 100px;
+}
+
+.cell-title {
+  font-size: 18px;
+  cursor: pointer;
+}
+.name-cell {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* table .name-cell {
+  border: 0;
+} */
+
+.count {
+  min-width: 36px;
+  height: 24px;
+  background-color: grey;
+  border-radius: 11px;
+  text-align: center;
+  color: white;
+  font-weight: 500;
+}
+
+.action-cell {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+}
+
+.table-bordered td {
+  border: 0;
+}
+
+.row-tabel {
+  border: 1px solid #dee2e6;
+}
+
+table .product-price {
+  border: 1px solid #dee2e6;
+}
+
+.search-input {
+  min-width: 254px;
+  margin-right: 40px;
+}
+tbody td {
+  width: 350px;
+}
+
+.add-btn-cell {
+  display: flex;
+}
+
+.add-btn-cell a {
+  margin-left: auto;
+}
