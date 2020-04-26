@@ -142,3 +142,31 @@ tbody td {
 .add-btn-cell a {
   margin-left: auto;
 }
+
+.cell-title-sort {
+  position: relative;
+}
+
+/* .cell-title-sort-up {
+  position: relative;
+} */
+
+
+ .cell-title-sort::after {
+  content: "";
+  position: absolute;
+  right: 9px;
+  top: 23px;
+  border: 9px solid transparent;
+  border-top-color: grey;
+ }
+
+ .cell-title-sort-up::after {
+  content: "";
+  position: absolute;
+  right: 9px;
+  top: 11px;
+  border: 9px solid transparent;
+  border-top-color: grey;
+  transform: rotate(180deg);
+ }

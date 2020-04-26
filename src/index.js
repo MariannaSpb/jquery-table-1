@@ -1,304 +1,35 @@
 import "./style.css";
-import {searchBtn, searchInput, ENTER_KEYCODE, filterTable} from './filter'
+import {searchBtn, searchInput, ENTER_KEYCODE, filterTable} from './filter';
+import {Product} from './product';
+import {Api, apiKey} from './api'
+import {ProductList} from './productList'
 
-const overlay = document.querySelector('.modal-overlay');
-const formContainer = document.querySelector('.modal__container-form');
-const addBtn = document.querySelector('.btn-add');
-const cancelBtn = document.querySelector('.btn-cancel-popup');
-const form = document.querySelector('.modal-product');
-const formTitle = document.querySelector('.form__title');
+const REQUIRED_FIELD = "Please, fill this field";
+const EMAIL_ERROR = "Email address is in the wrong format";
+const SHORT_ERROR = "Name min lenght is 5 characters";
+const LONG_ERROR = "Name max lenght is 15 characters";
+const ONLY_NUMBERS = "You can enter only numbers";
+
+export const overlay = document.querySelector('.modal-overlay');
+export const formContainer = document.querySelector('.modal__container-form');
+export const addBtn = document.querySelector('.btn-add');
+export const cancelBtn = document.querySelector('.btn-cancel-popup');
+export const form = document.querySelector('.modal-product');
+export const formTitle = document.querySelector('.form__title');
 //inputs
-const nameN = form.elements.name;
-const emailN = form.elements.email;
-const countN= form.elements.count;
-const priceN = form.elements.price;
-const deliveryN = form.elements.delivery;
-const optionArray = document.querySelectorAll('.select__option');
-const option = document.querySelector('.select__option');
-const optionContainer = document.querySelector('.select-delivery');
-
-const formatPrice = (num) => {
-  return `${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num)}`;
-};
+export const nameN = form.elements.name;
+export const emailN = form.elements.email;
+export const countN= form.elements.count;
+export const priceN = form.elements.price;
+export const deliveryN = form.elements.delivery;
+export const optionArray = document.querySelectorAll('.select__option');
+export const option = document.querySelector('.select__option');
+export const optionContainer = document.querySelector('.select-delivery');
+export const productContainer = document.querySelector('#tbody');
+export const fullTable = document.querySelector('#myTable');
 
 
 
-class Product {
-    //constructor({name, productId, count, supplierEmail, price, delivery: {russia, usa, belarus}}) {
-      constructor({name, count, supplierEmail, price, delivery}) {
-        this.name = name;
-        //this.productId = productId;
-        this.count = count;
-        this.price = price;
-        this.supplierEmail = supplierEmail
-        this.delivery = delivery; // [{…}, {…}, {…}]
-        // this.russia = russia;
-        // this.usa = usa;
-        // this.belarus = belarus;
-        
-    }
-
-
-    create() {
-      const row = document.createElement('tr');
-      const nameCell = document.createElement('td');
-      const nameLink = document.createElement('a');
-      const countCell = document.createElement('span');
-      const priceCell = document.createElement('td');
-      const actionsCell = document.createElement('td');
-      const deleteBtn = document.createElement('button');
-      const editeBtn = document.createElement('button');
-      const emailCell = document.createElement('p');
-      //const deliveryCell = document.createElement('p');
-      emailCell.classList.add('product-email');
-      emailCell.textContent = this.supplierEmail;
-      // deliveryCell.classList.add('product-delivery');
-      row.classList.add('row-tabel');
-      nameLink.textContent = this.name;
-     // nameLink.setAttribute('id', this.productId);
-      nameLink.setAttribute('href', '#');
-      nameLink.classList.add('product-name');
-      countCell.textContent = this.count;
-      priceCell.textContent = formatPrice(this.price);
-      priceCell.classList.add('product-price');
-      countCell.classList.add('count');
-
-
-
-
-
-      deleteBtn.classList.add('btn-delete');
-      editeBtn.classList.add('btn-edite');
-      editeBtn.classList.add('btn');
-      editeBtn.classList.add('btn-outline-secondary')
-      deleteBtn.classList.add('btn');
-      deleteBtn.classList.add('btn-outline-secondary')
-      deleteBtn.textContent = 'Delete';
-      editeBtn.textContent = 'Edite';
-      nameCell.classList.add('name-cell')
-      actionsCell.classList.add('action-cell')
-      nameCell.appendChild(nameLink);
-      nameCell.appendChild(countCell);
-      nameCell.appendChild(emailCell);
-      //nameCell.appendChild(deliveryCell);
-      actionsCell.appendChild(editeBtn);
-      actionsCell.appendChild(deleteBtn);
-
-      row.appendChild(nameCell);
-      row.appendChild(priceCell);
-      row.appendChild(actionsCell);
-
-      this.deleteBtn = deleteBtn;
-      this.editeBtn = editeBtn;
-      
-
-      this.deleteBtn.addEventListener("click", this.delete)
-      this.editeBtn.addEventListener("click", this.edite)
-      
-
-      // console.log('this.russia = russia', this.russia)
-      // console.log('this.delivery', this.delivery)
-      
-      return row;
-      
-    }
-
-    delete() {
-      const overlay = document.querySelector('.modal-overlay');
-      const modalContainer = document.querySelector('.modal__container');
-      overlay.classList.remove('hidden');
-      modalContainer.classList.remove('hidden');
-      const bntAgree = document.querySelector('.btn-agree');
-      const bntCancel = document.querySelector('.btn-cancel'); //дописать закрытие
-      const titleName= document.querySelector('.modal__title-name')
-
-      productContainer.addEventListener('click', (event) => { 
-        if(event.target.closest('.row-tabel').querySelector('.product-name')) {
-          titleName.textContent = event.target.closest('.row-tabel').querySelector('.product-name').textContent;
-        }
-      });
-     
-
-     
-      bntAgree.addEventListener('click', () => {
-        overlay.classList.add('hidden');
-        modalContainer.classList.add('hidden')
-        this.parentNode.parentNode.remove();
-  
-      });
-
-      bntCancel.addEventListener('click', () => {
-        overlay.classList.add('hidden');
-        modalContainer.classList.add('hidden')
-      });
-     
-    }
-
-    edite() {
-          overlay.classList.remove('hidden');
-          formContainer.classList.remove('hidden');
-
-          productContainer.addEventListener('click', (event) => {
-            if(event.target.closest('.row-tabel').querySelector('.product-name')) {
-              nameN.value = event.target.closest('.row-tabel').querySelector('.product-name').textContent;
-              countN.value = event.target.closest('.row-tabel').querySelector('.count').textContent;
-              emailN.value = event.target.closest('.row-tabel').querySelector('.product-email').textContent;
-              priceN.value = event.target.closest('.row-tabel').querySelector('.product-price').textContent;
-              formTitle.textContent = event.target.closest('.row-tabel').querySelector('.product-name').textContent;
-              
-          }
-        })
-
-        
-       
-    }
-
-    getDelivery () {
-      const createOption = (countryArray) => {
-        return countryArray.map((country) => `<option class="select__option" value="">${country}</option>`).join('');
-      };
- 
-      productContainer.addEventListener('click', (event) => {
-        if(event.target.closest('.root').querySelector('.select-delivery')) {
-        optionContainer.innerHTML = `<option class="select__option" selected></option>`+ createOption(this.delivery)
-      }
-    })
-
-  
-
-    }
-}
-
-
-
-class ProductList {
-  constructor(container, productsArray) {
-    this.container = container;
-    this.productsArray = productsArray;
-  }
-  //создаем новый экземпляр товара  и добавляем его в container
-  addProduct({name, count, supplierEmail, price, delivery} = product) {
-    const product = new Product({name, count, supplierEmail, price, delivery});
-    this.container.appendChild(product.create()); 
- 
-    product.getDelivery()
-  }
-
-  render() {
-    this.productsArray.forEach (({name, count, supplierEmail, price, delivery} = obj) => { 
-      this.addProduct({name, count, supplierEmail, price, delivery})
-    });
-  }
-}
-
-const productContainer = document.querySelector('#tbody');
-const fullTable = document.querySelector('#myTable');
-
-
-
-const apiKey = "$2b$10$eSjzRPzLod56mDFXfkN3ReMSTAAo2XTZeqQn7pQVsdliQ6fq8pvZ.";
-
-class Api {
-  constructor(optionObj) {
-    this.optionObj = optionObj
-    this.url = optionObj.baseUrl;
-    
-  }
-  getInitialProducts() { 
-    return fetch(`${this.url}`, { 
-      headers: {
-        method: 'GET',
-        'secret-key': apiKey 
-      }
-    })
-
-      .then(res => {
-          if(res.ok) {
-            return res.json();
-          }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-          if (result) {  
-          return result;
-        }
-    }) 
-    .catch((err) => {
-      console.log('Ошибка. Запрос не выполнен: ', err);
-    });
-  }
-
-  // addNewProduct() {
-  //   return fetch(`${this.url}`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'secret-key': apiKey,
-  //       'Content-Type': 'application/json'
-  //     },
-  
-    
-  //     body: JSON.stringify({
-  //       name: name,
-  //       count: count,
-  //       price: price
-  //     }) 
-    
-  // })
-
-  // .then(res => {
-  //   if (res.ok) {
-  //     return res.json();
-  //     }
-  
-  //   return Promise.reject(`Ошибка: ${res.status}`);
-  // })
-
-  // .then((result) => { //обрабатываем рузультат
-  //   if (result) {
-  //     return result
-  //     }
-  //   })
-  // }
-  addNewProduct() {
-    return fetch(`${this.url}`, {
-      method: 'POST',
-      headers: {
-        'secret-key': apiKey,
-        'Content-Type': 'application/json',
-      },
-
-      body: JSON.stringify({
-        name: nameN.value,
-        count: countN.value,
-        price: priceN.value,
-        //delivery: delivery
-      }) 
-    
-  })
-
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-      }
-  
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-
-  .then((result) => { //обрабатываем рузультат
-    if (result) {
-      return result
-
-      // productList.addProduct({name, productId, count, supplierEmail, price, delivery} = result);
-      // overlay.classList.add('hidden');
-      // formContainer.classList.add('hidden');
-      // form.reset();
-      }
-    })
-  }
-
-
-
-}
 
 const api = new Api({
    baseUrl: 'https://api.jsonbin.io/b/5ea3ec8d98b3d5375234328c', //delivery= [country]
@@ -331,7 +62,11 @@ api.getInitialProducts()
     });
     switch (event.target.dataset.columnName) {
       case 'name':
+        event.target.classList.add('cell-title-sort');
+        event.target.classList.remove('cell-title-sort-up')
+        document.querySelector('[data-price="p"]').classList.remove('cell-title-sort')
         const sortedByName = arrayProducts.slice().sort((a, b) => {
+          console.log('TARGET', event.target)
             if (a.name < b.name) return -1;
             if (b.name < a.name) return 1;
           return 0;
@@ -344,13 +79,17 @@ api.getInitialProducts()
         break;
       case 'price':
         const sortedByPrice = arrayProducts.slice().sort((a, b) =>  a.price - b.price);
+        document.querySelector('[data-name="n"]').classList.remove('cell-title-sort')
+        
+        event.target.classList.add('cell-title-sort')
+        event.target.classList.remove('cell-title-sort-up')
         //console.log('sortedByPrice', sortedByPrice) //массив объектов
         let sortedByPriceList = new ProductList(productContainer, sortedByPrice)
         sortedByPriceList.render()
       
         break;
-    
     }
+    
   })
 
 })
@@ -360,8 +99,11 @@ api.getInitialProducts()
 
 
 
-const openPopupHendler = () => {
+const openPopupHendler = (event) => {
   form.reset();
+  if(event.target.closest('.root').querySelector('.form__title')) {
+    formTitle.textContent='';
+  }
   overlay.classList.remove('hidden');
   formContainer.classList.remove('hidden');
 }
@@ -392,11 +134,7 @@ const validateEmail = (email) => {
   return pattern.test(email);
 }
 
-const REQUIRED_FIELD = "Please, fill this field";
-const EMAIL_ERROR = "Email address is in the wrong format";
-const SHORT_ERROR = "Name min lenght is 5 characters";
-const LONG_ERROR = "Name max lenght is 15 characters";
-const ONLY_NUMBERS = "You can enter only numbers";
+
 
 
 // form.addEventListener('click', (event) => { 
