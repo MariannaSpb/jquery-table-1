@@ -27,12 +27,18 @@ export const option = document.querySelector('.select__option');
 export const optionContainer = document.querySelector('.select-delivery');
 export const productContainer = document.querySelector('#tbody');
 export const fullTable = document.querySelector('#myTable');
+const select = document.querySelector('select');
+const rusCity = ['Moscow', 'Saint-Petersburg', 'Kazan'];
+const belCity = ['Vitebs', 'Minsk', 'Gomel'];
+const usaCity = ['New York', 'San Francisco', 'Boston'];
+const container = document.querySelector('.select-container__modal');
+
 
 
 
 
 const api = new Api({
-   baseUrl: 'https://api.jsonbin.io/b/5ea3ec8d98b3d5375234328c', //delivery= [country]
+   baseUrl: 'https://api.jsonbin.io/b/5ea589892940c704e1dee3f3',
   headers: {
     "secret-key": apiKey,
     'Content-Type': 'application/json'
@@ -44,7 +50,6 @@ api.getInitialProducts()
   let arrayProducts = [];
   let deliveryArr = [] 
   result.forEach(element => {
-    //console.log('elem', element.delivery) // [{…}, {…}, {…}]
     arrayProducts.push(element);
     deliveryArr.push(element.delivery)
   });
@@ -66,12 +71,10 @@ api.getInitialProducts()
         event.target.classList.remove('cell-title-sort-up')
         document.querySelector('[data-price="p"]').classList.remove('cell-title-sort')
         const sortedByName = arrayProducts.slice().sort((a, b) => {
-          console.log('TARGET', event.target)
             if (a.name < b.name) return -1;
             if (b.name < a.name) return 1;
           return 0;
         });
-         console.log('sortedByName', sortedByName)
 
         let sortedByNameList = new ProductList(productContainer, sortedByName)
         sortedByNameList.render()
@@ -83,7 +86,6 @@ api.getInitialProducts()
         
         event.target.classList.add('cell-title-sort')
         event.target.classList.remove('cell-title-sort-up')
-        //console.log('sortedByPrice', sortedByPrice) //массив объектов
         let sortedByPriceList = new ProductList(productContainer, sortedByPrice)
         sortedByPriceList.render()
       
@@ -101,20 +103,22 @@ api.getInitialProducts()
 
 const openPopupHendler = (event) => {
   form.reset();
+  container.classList.add('hidden')
   if(event.target.closest('.root').querySelector('.form__title')) {
     formTitle.textContent='';
   }
   overlay.classList.remove('hidden');
   formContainer.classList.remove('hidden');
+  
 }
 const closePopupHendler = () => {
   overlay.classList.add('hidden');
   formContainer.classList.add('hidden');
+  form.reset();
 }
 
 const initialCards = api.getInitialProducts()
 .then(result => {
-  // console.log('result', result) //[{} {} {}]
   let arr = [];
   result.forEach(element => {
     arr.push(element);
@@ -134,10 +138,6 @@ const validateEmail = (email) => {
   return pattern.test(email);
 }
 
-
-
-
-// form.addEventListener('click', (event) => { 
   saveBtn.addEventListener('click', (event) => {
   event.preventDefault();
 
@@ -147,13 +147,14 @@ const validateEmail = (email) => {
   const price = event.target.closest('.modal__container-form').querySelector('.input-price').value;
   const delivery = event.target.closest('.modal__container-form').querySelector('option:checked').textContent;
 
-  const namePattern = /^[\s]+$/ 
+  const namePattern = /^[\s]+$/
   const countPattern = /^\d+$/ //строка состоящая из одного или более символа входящего в диапазон 0-9(\d)
   const pricePattern = /^\.|[^\d\.]/g;
   if(name.length < 5) {
     errorContainer.style.display = "block";
     nameN.closest('.form-group').querySelector('.invalid-feedback').textContent = SHORT_ERROR;
     nameN.classList.add('error');
+    return true;
   } 
   if(name.length > 15) {
     errorContainer.style.display = "block";
@@ -169,7 +170,7 @@ const validateEmail = (email) => {
   if(name.length > 5 && name.length < 15 && !namePattern.test(name)) {
     errorContainer.style.display = "none";
     nameN.classList.remove('error');
-    console.log('validSuccess')
+   
   }
 
   //email
@@ -224,6 +225,7 @@ const validateEmail = (email) => {
     priceN.classList.remove('error');
   } 
 
+
 //временное решение
 // productList.addProduct({name, count,  price, delivery});
 // closePopupHendler();
@@ -235,18 +237,12 @@ localStorage.setItem("name", nameN.value);
 localStorage.setItem("count", countN.value);
 localStorage.setItem("price", priceN.value);
 let itemsArray = localStorage.getItem('items') ? localStorage.getItem('items') : [];
-//let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : {};
-// localStorage.setItem('items', JSON.stringify(itemsArray));
-
-// const data = localStorage.getItem('items');
-// console.log('itemsArray', itemsArray)
-console.log('localStorage', localStorage)
  //---------------------------------------------------
  productList.addProduct({name, count,  price, delivery});
   closePopupHendler();
 })
 
-// productList.addProduct({name, count,  price, delivery} = localStorage);
+productList.addProduct(localStorage);
 
 
 //clear localstorage
@@ -275,31 +271,73 @@ nameN.addEventListener('blur', () => {
 })
 
 
-addBtn.addEventListener('click', openPopupHendler)
-cancelBtn.addEventListener('click', closePopupHendler)
 
-//All checkboxes
-$('#all').change(function(e) {
-  if (e.currentTarget.checked) {
-  $('.rows').find('input[type="checkbox"]').prop('checked', true);
-} else {
-    $('.rows').find('input[type="checkbox"]').prop('checked', false);
+
+
+
+const fillCheckboxes = (cityArray) => {
+  return cityArray.map((city, index) => `<div class="rows">
+<input class="checkbox"  id="box${index + 1}" type="checkbox" />
+<label class="checkbox__label" for="box${index + 1}">${city}</label>
+</div>`).join('');
   }
-});
+
+$( "select" )
+  .change(function () {
+    
+    $( "select option:selected" ).each(function() {
+      container.classList.remove('hidden')
+      if(select.value == "Russia") {
+       container.innerHTML = `<div class="checkbox select-all">
+       <input id="all" type="checkbox" />
+       <label class="checkbox__label" for="all">Select all</label>
+     </div>` + fillCheckboxes(rusCity)
+   
+      }
+       if(select.value == "USA") {
+        container.innerHTML = ''
+         container.innerHTML = ''
+       container.innerHTML = `<div class="checkbox select-all">
+       <input id="all" type="checkbox" />
+       <label class="checkbox__label" for="all">Select all</label>
+     </div>` + fillCheckboxes(usaCity)
+      }
+         if(select.value == "Belarus") {
+         container.innerHTML = ''
+       container.innerHTML = `<div class="checkbox select-all">
+       <input id="all" type="checkbox" />
+       <label class="checkbox__label" for="all">Select all</label>
+     </div>` + fillCheckboxes(belCity);
+
+      } 
+      if(document.querySelector('#all')) {
+        const all = document.querySelector('#all')
+        $('#all').change(function(e) {
+          if (e.currentTarget.checked) {
+          $('.rows').find('input[type="checkbox"]').prop('checked', true);
+        } else {
+            $('.rows').find('input[type="checkbox"]').prop('checked', false);
+          }
+        })
+        
+      }
+     
+    });
+  
+  })
+
+
+const productName = document.querySelector('.product-name');
+
+if(productName.textContent == '') {
+  productName.parentNode.parentNode.remove()
+}
 
 
 
 
-
-
-
-
-
-
-
-
-
-
+  addBtn.addEventListener('click', openPopupHendler);
+  cancelBtn.addEventListener('click', closePopupHendler);
 
 
 

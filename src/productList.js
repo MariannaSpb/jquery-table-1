@@ -9,7 +9,9 @@ export class ProductList {
     addProduct({name, count, supplierEmail, price, delivery} = product) {
       const product = new Product({name, count, supplierEmail, price, delivery});
       this.container.appendChild(product.create()); 
-   
+      // console.log('this.delivery', product.delivery)
+
+
       product.getDelivery()
     }
   
@@ -17,5 +19,7 @@ export class ProductList {
       this.productsArray.forEach (({name, count, supplierEmail, price, delivery} = obj) => { 
         this.addProduct({name, count, supplierEmail, price, delivery})
       });
+      
+      
     }
   }

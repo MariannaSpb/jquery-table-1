@@ -1,0 +1,47 @@
+[
+  {
+    "productId": 1,
+    "name": "Zinfandel",
+    "supplierEmail": "test-1@emai.ru",
+    "count": 100,
+    "price": "95",
+    "delivery": ["Russia", "Belarus", "USA"]
+  },
+    {
+    "productId": 2,
+    "name": "Urban Riesling",
+    "supplierEmail": "test-2@emai.ru",
+    "count": 80,
+    "price": "105",
+    "delivery": ["Russia", "Belarus", "USA"]
+  },
+  {
+      "productId": 3,
+      "name": "Chapel Peak Pinot Noir",
+      "supplierEmail": "test-3@emai.ru",
+      "count": 13,
+      "price": "280",
+      "delivery": ["Russia", "Belarus", "USA"]
+    },
+    {
+      "productId": 4,
+      "name": "Garganega e Chardonnay",
+      "supplierEmail": "test-4@emai.ru",
+      "count": 200,
+      "price": "79",
+      "delivery": ["Russia", "Belarus", "USA"]
+    },
+
+    {
+      "productId": 5,
+      "name": "Garganega Shiraz",
+      "supplierEmail": "test-5@emai.ru",
+      "count": 200,
+      "price": "103",
+      "delivery": ["Russia", "Belarus", "USA"]
+    }
+
+]
+
+
+

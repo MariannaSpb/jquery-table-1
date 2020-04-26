@@ -10,7 +10,7 @@ export class Product {
         this.count = count;
         this.price = price;
         this.supplierEmail = supplierEmail
-        this.delivery = delivery; // [{…}, {…}, {…}]
+        this.delivery = delivery;
     }
 
     create() {
@@ -119,17 +119,27 @@ export class Product {
     }
 
     getDelivery () {
+     
       const createOption = (countryArray) => {
-        return countryArray.map((country) => `<option class="select__option" value="">${country}</option>`).join('');
+        return countryArray.map(country => `<option class="select__option" value="${country}">${country}</option>`).join('');
       };
- 
+      
       productContainer.addEventListener('click', (event) => {
-        if(event.target.closest('.root').querySelector('.select-delivery')) {
-        optionContainer.innerHTML = `<option class="select__option" selected></option>`+ createOption(this.delivery)
+        if(event.target.closest('.root').querySelector('.select-delivery') && this.delivery == !undefined) {
+        optionContainer.innerHTML = `<option class="select__option" selected></option>` + createOption(this.delivery)
       }
     })
 
-  
 
-    }
+
+
+    
+  }
 }
+
+
+
+
+
+
+

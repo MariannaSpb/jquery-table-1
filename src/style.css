@@ -21,7 +21,7 @@
   position: relative;
   top: 10%;
   left: 25%;
-  width: 440px;
+  width: 550px;
   min-height: 230px;
   background-color: #fff;
   border-radius: 12px;
@@ -31,7 +31,7 @@
 }
 
 .modal__container-form {
-  width: 440px;
+  width: 550px;
   min-height: 230px;
   background-color: #fff;
   border-radius: 12px;
@@ -170,3 +170,44 @@ tbody td {
   border-top-color: grey;
   transform: rotate(180deg);
  }
+
+
+ .select-container__modal {
+  color: black;
+  width: 170px;
+  min-height: 140px;
+  padding: 15px;
+border-radius: 8px;
+  border: 2px solid #dee2e6;
+}
+
+.select-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-delivery {
+  width: 250px;
+  font-size: 1rem;
+  margin-bottom: 50px;
+}
+.select-all {
+  position: relative;
+}
+.select-all::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 9px;
+  width: 142px;
+  height: 1px;
+  background-color: grey;
+}
+
+.btn-save {
+  width: 120px;
+}
+
+.btn-cancel-popup {
+ width: 30px ;
+}
